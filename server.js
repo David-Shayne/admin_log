@@ -5,21 +5,21 @@ const userAPI = require('./routes/userAPI');
 const path = require('path');
 const mongoose = require('mongoose');
 
-app.use(express.json());
+// app.use(express.json());
 
-mongoose
-    .connect(keys.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(console.log('MongoDB connected'))
-    .catch(err => {
-        throw err;
-    });
+// mongoose
+//     .connect(keys.MONGO_URI, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true
+//     })
+//     .then(console.log('MongoDB connected'))
+//     .catch(err => {
+//         throw err;
+//     });
 
-app.use('/api/users', userAPI);
+// app.use('/api/users', userAPI);
 
-app.use(express.static('build'));
+// app.use(express.static('build'));
 app.get('/', (req, res) => {
     res.send('working');
 });
