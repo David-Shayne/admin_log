@@ -1,8 +1,2 @@
 /node_modules
 client/node_modules
-client/public
-client/src
-client/package.json
-client/package-lock.json
-client/README.md 
-client/.gitignore
