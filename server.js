@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 // const keys = require('./config/keys');
 // const userAPI = require('./routes/userAPI');
-// const path = require('path');
+const path = require('path');
 // const mongoose = require('mongoose');
 
 // app.use(express.json());
@@ -19,9 +19,9 @@ const app = express();
 
 // app.use('/api/users', userAPI);
 
-// app.use(express.static('build'));
+app.use(express.static('build'));
 app.get('/', (req, res) => {
-    res.send('working');
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
