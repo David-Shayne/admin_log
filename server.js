@@ -19,8 +19,8 @@ mongoose
 
 app.use('/api/users', userAPI);
 
-app.use(express.static(path.resolve(__dirname, 'client', 'build')));
-app.get('*', (req, res) => {
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
