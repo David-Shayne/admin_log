@@ -4,7 +4,9 @@ const keys = require('./config/keys');
 const userAPI = require('./routes/userAPI');
 const path = require('path');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 
 mongoose
