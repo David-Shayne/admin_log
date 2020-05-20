@@ -19,22 +19,25 @@ export class UserModal extends Component {
         super(props);
 
         this.state = {
-            warning: false,
+            warningUsername: false,
             isOpen: false,
             status: 'Active',
             email: '',
             username: ''
         };
 
+        // binding functions
         this.toggle = this.toggle.bind(this);
         this.onChange = this.onChange.bind(this);
         this.submit = this.submit.bind(this);
     }
 
+    // resets state to natural values, toggles isOpen for Modal
     toggle = () => {
         this.setState(state => ({
             isOpen: !state.isOpen,
-            warning: false,
+            warningUsername: false,
+            warningEmail: false,
             username: '',
             status: 'Active',
             email: ''
@@ -48,17 +51,21 @@ export class UserModal extends Component {
     submit(e) {
         e.preventDefault();
 
-        if (this.state.username) {
+        if (!this.state.username || hasWhitespace(this.state.username)) {
+            this.setState(state => ({
+                warningUsername: true
+            }));
+        } else if (!validateEmail(this.state.email)) {
+            this.setState({
+                warningEmail: true
+            });
+        } else {
             this.props.addUser({
                 username: this.state.username,
                 status: this.state.status,
-                email: this.state.email
+                email: this.state.email.toLowerCase()
             });
             this.toggle();
-        } else {
-            this.setState(state => ({
-                warning: true
-            }));
         }
     }
 
@@ -88,12 +95,12 @@ export class UserModal extends Component {
                             </FormGroup>
                             <Alert
                                 color="danger"
-                                isOpen={this.state.warning}
+                                isOpen={this.state.warningUsername}
                                 toggle={() => {
-                                    this.setState({ warning: false });
+                                    this.setState({ warningUsername: false });
                                 }}
                             >
-                                Error: Please add a username
+                                Please input a username without spaces
                             </Alert>
                             <FormGroup>
                                 <Label for="email">Email:</Label>
@@ -105,6 +112,15 @@ export class UserModal extends Component {
                                     value={this.state.email}
                                 />
                             </FormGroup>
+                            <Alert
+                                color="danger"
+                                isOpen={this.state.warningEmail}
+                                toggle={() => {
+                                    this.setState({ warningEmail: false });
+                                }}
+                            >
+                                Please input a valid email address
+                            </Alert>
                             <FormGroup>
                                 <Label for="status">Status:</Label>
                                 <Input
@@ -139,5 +155,18 @@ export class UserModal extends Component {
         );
     }
 }
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+// returns true if whitespace is detected
+const hasWhitespace = string => {
+    if (string.indexOf(' ') !== -1) {
+        return true;
+    }
+    return false;
+};
 
 export default connect(null, { addUser })(UserModal);
